@@ -23,12 +23,12 @@ import { Role } from 'src/auth/enums/role.enum';
 import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt/jwt-guard';
 
-@Controller('tickets')
-export class TicketsController {
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.Admin)
+@Controller('admin/tickets')
+export class TicketsAdminController {
   constructor(private ticketsService: TicketsService) {}
 
-  @UseGuards(JwtAuthGuard, RolesGuard) // JwtAuthGuard phải đứng TRƯỚC RolesGuard
-  @Roles(Role.Admin, Role.Staff)
   @Post()
   create(@Body() createTicketTO: CreateTicketDTO): Promise<Ticket> {
     return this.ticketsService.create(createTicketTO);
@@ -58,5 +58,23 @@ export class TicketsController {
   @Delete(':id')
   delete(@Param('id', new ParseIntPipe()) id: number): Promise<DeleteResult> {
     return this.ticketsService.remove(id);
+  }
+}
+
+@Controller('tickets')
+export class TicketsUserController {
+  constructor(private ticketsService: TicketsService) {}
+
+  @Get()
+  findAll(): Promise<Ticket[]> {
+    return this.ticketsService.findAllAvailableTicket();
+  }
+
+  @Get(':id')
+  findOne(
+    @Param('id', new ParseIntPipe())
+    id: number,
+  ): Promise<Ticket | null> {
+    return this.ticketsService.findOneAvailableTicket(id);
   }
 }

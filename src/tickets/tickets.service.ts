@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ticket } from './ticket.entity';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { CreateTicketDTO } from './dto/create-ticket-dto';
 import { UpdateTicketDTO } from './dto/update-ticket-dto';
 import { UpdateResult } from 'typeorm/browser';
@@ -13,6 +13,8 @@ export class TicketsService {
     @InjectRepository(Ticket)
     private ticketsRepo: Repository<Ticket>,
   ) {}
+  
+  //ADMIN
 
   async create(ticketDTO: CreateTicketDTO) {
     const ticket = new Ticket();
@@ -38,5 +40,18 @@ export class TicketsService {
 
   remove(id: number): Promise<DeleteResult> {
     return this.ticketsRepo.delete(id);
+  }
+
+  //USER
+  findAllAvailableTicket(): Promise<Ticket[]> {
+    return this.ticketsRepo.find({
+      where:{
+        available: MoreThan(new Date),
+      }
+    });
+  }
+
+  findOneAvailableTicket(id: number): Promise<Ticket | null> {
+    return this.ticketsRepo.findOneBy({ id });
   }
 }

@@ -18,16 +18,20 @@ export class RolesGuard implements CanActivate {
     }
     const request = context.switchToHttp().getRequest();
 
-    const authHeader = request.headers.authorization;
-    
-    const token = authHeader.split(' ')[1];
+    try {
+      const authHeader = request.headers.authorization;
 
-    const jwtSecret = authConstants.secret      
-    const payload = jwt.verify(token, jwtSecret) as any;
+      const token = authHeader.split(' ')[1];
 
-    console.log(payload);
+      const jwtSecret = authConstants.secret;
+      const payload = jwt.verify(token, jwtSecret) as any;
 
-    const requiredRole = requiredRoles.some((role) => payload.role == role);
-    return requiredRole;
+      console.log(payload);
+
+      const requiredRole = requiredRoles.some((role) => payload.role == role);
+      return requiredRole;
+    } catch (error) {
+      return error;
+    }
   }
 }
