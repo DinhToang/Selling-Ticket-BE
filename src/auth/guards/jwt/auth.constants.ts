@@ -1,3 +1,3 @@
 export const authConstants = {
-    secret: 'MySecret'
+    secret: 'MySecretPass No One Know'
 }

@@ -23,7 +23,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt/jwt-guard';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Role.Admin)
 @Controller('admin/tickets')
-export class TicketsAdminController {
+export class AdminTicketsController {
   constructor(private ticketsService: TicketsService) {}
 
   @Post()
@@ -59,7 +59,7 @@ export class TicketsAdminController {
 }
 
 @Controller('tickets')
-export class TicketsUserController {
+export class UserTicketsController {
   constructor(private ticketsService: TicketsService) {}
 
   @Get()

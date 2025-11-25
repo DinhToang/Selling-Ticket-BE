@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { EventsAdminController, EventsUserController } from './events.controller';
+import { AdminEventsController, UserEventsController } from './events.controller';
 import { EventsService } from './events.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Event } from './event.entity';
@@ -8,7 +8,7 @@ import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Event])],
-  controllers: [EventsAdminController, EventsUserController],
+  controllers: [AdminEventsController, UserEventsController],
   providers: [EventsService],
   exports: [EventsService],
 })

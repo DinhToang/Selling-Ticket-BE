@@ -23,7 +23,7 @@ import { UpdateEventDTO } from './dto/update-event-dto';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Role.Admin)
 @Controller('admin/events')
-export class EventsAdminController {
+export class AdminEventsController {
   constructor(private eventService: EventsService) {}
 
   @Post()
@@ -59,7 +59,7 @@ export class EventsAdminController {
 }
 
 @Controller('events')
-export class EventsUserController {
+export class UserEventsController {
   constructor(private eventService: EventsService) {}
   @Get()
   findAll(): Promise<Event[]> {

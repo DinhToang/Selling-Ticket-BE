@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import {
-  TicketsAdminController,
-  TicketsUserController,
+  AdminTicketsController,
+  UserTicketsController,
 } from './tickets.controller';
 import { TicketsService } from './tickets.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,7 +11,7 @@ import { Ticket } from './ticket.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Ticket])],
-  controllers: [TicketsAdminController, TicketsUserController],
+  controllers: [AdminTicketsController, UserTicketsController],
   providers: [TicketsService],
   exports: [TicketsService],
 })

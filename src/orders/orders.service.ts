@@ -25,6 +25,12 @@ export class OrdersService {
     private orderTicketRepo: Repository<OrderTicket>,
   ) {}
 
+  //ADMIN
+  findAllOrders(): Promise<Order[]> {
+    return this.orderRepo.find({ relations: ['orderTickets'] });
+  }
+
+  //USER
   async create(createOrderDTO: CreateOrderDTO, userId: number): Promise<Order> {
     const { items } = createOrderDTO;
     const ticketIds = items.map((i) => i.ticketId);
@@ -89,8 +95,17 @@ export class OrdersService {
       where: {
         userId: userId,
       },
-      relations:['orderTickets']
-    }
-  );
+      relations: ['orderTickets'],
+    });
+  }
+
+  findUserOneOrder(userId: number, orderId): Promise<Order | null> {
+    return this.orderRepo.findOne({
+      where: {
+        id: orderId,
+        userId: userId,
+      },
+      relations: ['orderTickets'],
+    });
   }
 }

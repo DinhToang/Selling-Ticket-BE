@@ -5,13 +5,13 @@ import { Repository } from 'typeorm';
 import { Ticket } from 'src/tickets/ticket.entity';
 import { request } from 'express';
 import { CreateOrderDTO } from './dto/create-order-dto';
-import { UserOrdersController } from './orders.controller';
+import { AdminOrdersController, UserOrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 import { OrderTicket } from './order-ticket.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Ticket, Order, OrderTicket])],
-  controllers: [UserOrdersController],
+  controllers: [UserOrdersController, AdminOrdersController],
   providers: [OrdersService],
 })
 export class OrdersModule {}
