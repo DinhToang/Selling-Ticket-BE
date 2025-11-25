@@ -11,19 +11,17 @@ import {
 export class CreateTicketDTO {
   @IsString()
   @IsNotEmpty()
-  readonly event;
+  readonly type: string;
 
+  @IsNumber()
   @IsNotEmpty()
-  @IsString()
-  readonly type;
+  readonly price: number;
 
+  @IsNumber()
   @IsNotEmpty()
-  @IsDateString()
-  readonly available: Date;
+  readonly availableTicket: number;
 
+  @IsNumber()
   @IsNotEmpty()
-  @IsDateString()
-  readonly expiresAt: Date;
-
-
+  readonly eventId: number;
 }

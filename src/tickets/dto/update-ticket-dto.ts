@@ -10,17 +10,13 @@ import {
 export class UpdateTicketDTO {
   @IsString()
   @IsOptional()
-  readonly event: string;
-
-  @IsOptional()
-  @IsString()
   readonly type: string;
 
-  @IsDateString()
+  @IsNumber()
   @IsOptional()
-  readonly available: Date;
+  readonly price;
 
-  @IsDateString()
+  @IsNumber()
   @IsOptional()
-  readonly expiresAt: Date;
+  readonly totalQuantity;
 }

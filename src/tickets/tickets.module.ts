@@ -6,19 +6,13 @@ import {
 import { TicketsService } from './tickets.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Ticket } from './ticket.entity';
-import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
+// import { APP_GUARD } from '@nestjs/core';
+// import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Ticket])],
   controllers: [TicketsAdminController, TicketsUserController],
-  providers: [
-    TicketsService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  providers: [TicketsService],
   exports: [TicketsService],
 })
 export class TicketsModule {}

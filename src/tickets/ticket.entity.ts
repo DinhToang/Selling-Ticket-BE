@@ -2,12 +2,15 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  ManyToMany,
+  OneToMany,
 } from 'typeorm';
 import { Order } from '../orders/order.entity';
+import { Event } from 'src/events/event.entity';
+import { OrderTicket } from 'src/orders/order-ticket.entity';
 
 @Entity('tickets')
 export class Ticket {
@@ -15,16 +18,13 @@ export class Ticket {
   id: number;
 
   @Column()
-  event: string; // hoặc liên kết với Event entity sau này
+  type: string; // VIP, Standard
 
-  @Column()
-  type: string; // VIP, Standard, Early Bird...
+  @Column({ type: 'int'})
+  price: number;
 
-  // @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  // created: Date;
-
-  // @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  // updated: Date;
+  @Column({ type: 'int', default: 0 })
+  availableTicket: number; // tổng số vé có sẵn
 
   @CreateDateColumn({ type: 'timestamptz' })
   created: Date;
@@ -32,17 +32,14 @@ export class Ticket {
   @UpdateDateColumn({ type: 'timestamptz' })
   updated: Date;
 
-  @Column({ type: 'timestamptz', nullable: false })
-  available: Date;
+  // Ticket thuộc về 1 Event
+  @ManyToOne(() => Event, (event) => event.tickets, { onDelete: 'CASCADE' })
+  event: Event;
 
-  @Column({ type: 'timestamptz', nullable: true })
-  expiresAt?: Date;
+  @Column()
+  eventId: number;
 
-  // Một ticket chỉ thuộc về 1 order (hoặc null nếu chưa bán)
-  @OneToOne(() => Order, (order) => order.tickets, { nullable: true })
-  @JoinColumn()
-  order?: Order;
-
-  @Column({ nullable: true })
-  orderId?: number;
+  // ticket.entity.ts
+  @OneToMany(() => OrderTicket, (ot) => ot.ticket)
+  orderTickets: OrderTicket[];
 }

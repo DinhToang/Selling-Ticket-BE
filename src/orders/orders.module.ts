@@ -5,20 +5,13 @@ import { Repository } from 'typeorm';
 import { Ticket } from 'src/tickets/ticket.entity';
 import { request } from 'express';
 import { CreateOrderDTO } from './dto/create-order-dto';
-import { OrdersController } from './orders.controller';
+import { UserOrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
-import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
+import { OrderTicket } from './order-ticket.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Ticket, Order])],
-  controllers: [OrdersController],
-  providers: [
-    OrdersService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  imports: [TypeOrmModule.forFeature([Ticket, Order, OrderTicket])],
+  controllers: [UserOrdersController],
+  providers: [OrdersService],
 })
 export class OrdersModule {}

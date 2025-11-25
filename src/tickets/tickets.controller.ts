@@ -3,13 +3,10 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
   Put,
-  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
@@ -67,7 +64,7 @@ export class TicketsUserController {
 
   @Get()
   findAll(): Promise<Ticket[]> {
-    return this.ticketsService.findAllAvailableTicket();
+    return this.ticketsService.findAllTicketForUser();
   }
 
   @Get(':id')
@@ -75,6 +72,6 @@ export class TicketsUserController {
     @Param('id', new ParseIntPipe())
     id: number,
   ): Promise<Ticket | null> {
-    return this.ticketsService.findOneAvailableTicket(id);
+    return this.ticketsService.findOneTicketForUser(id);
   }
 }

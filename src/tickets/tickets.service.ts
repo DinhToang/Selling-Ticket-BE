@@ -13,15 +13,15 @@ export class TicketsService {
     @InjectRepository(Ticket)
     private ticketsRepo: Repository<Ticket>,
   ) {}
-  
+
   //ADMIN
 
   async create(ticketDTO: CreateTicketDTO) {
     const ticket = new Ticket();
-    ticket.event = ticketDTO.event;
     ticket.type = ticketDTO.type;
-    ticket.available = ticketDTO.available;
-    ticket.expiresAt = ticketDTO.expiresAt;
+    ticket.price = ticketDTO.price;
+    ticket.availableTicket = ticketDTO.availableTicket;
+    ticket.eventId = ticketDTO.eventId;
 
     return await this.ticketsRepo.save(ticket);
   }
@@ -43,15 +43,26 @@ export class TicketsService {
   }
 
   //USER
-  findAllAvailableTicket(): Promise<Ticket[]> {
+  findAllTicketForUser(): Promise<Ticket[]> {
     return this.ticketsRepo.find({
-      where:{
-        available: MoreThan(new Date),
-      }
+      where: {
+        event: {
+          eventDate: MoreThan(new Date()),
+        },
+      },
+      relations: ['event'],
     });
   }
 
-  findOneAvailableTicket(id: number): Promise<Ticket | null> {
-    return this.ticketsRepo.findOneBy({ id });
+  findOneTicketForUser(id: number): Promise<Ticket | null> {
+    return this.ticketsRepo.findOne({
+      where: {
+        id: id,
+        event: {
+          eventDate: MoreThan(new Date()),
+        },
+      },
+      relations: ['event'],
+    });
   }
 }
