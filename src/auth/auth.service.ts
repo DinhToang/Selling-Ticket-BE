@@ -48,7 +48,7 @@ export class AuthService {
           id: user.id,
           email: user.email,
           role: user.role,
-          redirectUrl, // frontend sẽ đọc cái này để redirect
+          redirectUrl,
         },
       };
     } else {

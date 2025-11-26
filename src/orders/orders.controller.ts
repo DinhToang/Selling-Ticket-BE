@@ -25,7 +25,6 @@ export class AdminOrdersController {
   findAll(): Promise<Order[]> {
     return this.ordersService.findAllOrders();
   }
-
 }
 
 @UseGuards(JwtAuthGuard)
@@ -58,8 +57,19 @@ export class UserOrdersController {
     @Param('id', new ParseIntPipe())
     id: number,
   ): Promise<Order | null> {
-        const userId = req.user.userId;
+    const userId = req.user.userId;
 
-    return this.ordersService.findUserOneOrder(userId,id);
+    return this.ordersService.findUserOneOrder(userId, id);
+  }
+
+  @Post(':orderId/cancle')
+  cancleOrder(
+    @Param('orderId', new ParseIntPipe())
+    orderId: number,
+    @Req() req: any,
+  ): Promise<Order | null> {
+    const userId = req.user.userId;
+    console.log(userId);
+    return this.ordersService.cancleOrder(orderId, userId);
   }
 }

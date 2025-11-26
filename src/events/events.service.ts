@@ -14,6 +14,7 @@ export class EventsService {
     private eventRepo: Repository<Event>,
   ) {}
 
+  //Admin
   async create(createEventDTO: CreateEventDTO): Promise<Event> {
     const event = new Event();
     event.name = createEventDTO.name;
@@ -39,6 +40,7 @@ export class EventsService {
     return this.eventRepo.delete(id);
   }
 
+  //User
   findAllEventForUser(): Promise<Event[]> {
     return this.eventRepo.find({
       where: {

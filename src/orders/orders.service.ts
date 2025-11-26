@@ -90,6 +90,39 @@ export class OrdersService {
     return order;
   }
 
+  async cancleOrder(orderId: number, userId: number): Promise<Order | null> {
+    const order = await this.orderRepo.findOneOrFail({
+      where: { id: orderId, userId },
+      relations: [
+        'orderTickets',
+        'orderTickets.ticket',
+        'orderTickets.ticket.event',
+      ],
+    });
+
+    for (const ot of order?.orderTickets) {
+      const eventDate = ot.ticket.event.eventDate;
+      const timeUntilEvent = (eventDate.getTime() - Date.now()) / (1000 * 3600);
+
+      if (timeUntilEvent < 24) {
+        throw new BadRequestException('Đã quá thời hạn trả vé');
+      }
+    }
+
+    for (const ot of order?.orderTickets) {
+      await this.ticketRepo.increment(
+        { id: ot.ticketId },
+        'availableTicket',
+        ot.quantity,
+      );
+    }
+
+    await this.orderRepo.update(orderId, {
+      status: 'cancelled',
+    });
+    return order;
+  }
+
   findUserOrders(userId: number): Promise<Order[]> {
     return this.orderRepo.find({
       where: {
