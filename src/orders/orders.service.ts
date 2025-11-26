@@ -128,7 +128,7 @@ export class OrdersService {
       where: {
         userId: userId,
       },
-      relations: ['orderTickets'],
+      relations: ['orderTickets', 'orderTickets.ticket'],
     });
   }
 
@@ -138,7 +138,7 @@ export class OrdersService {
         id: orderId,
         userId: userId,
       },
-      relations: ['orderTickets'],
+      relations: ['orderTickets', 'orderTickets.ticket'],
     });
   }
 }

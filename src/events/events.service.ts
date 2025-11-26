@@ -46,6 +46,7 @@ export class EventsService {
       where: {
         eventDate: MoreThan(new Date()),
       },
+      relations: ['tickets'],
     });
   }
 
@@ -55,6 +56,7 @@ export class EventsService {
         id: id,
         eventDate: MoreThan(new Date()),
       },
+      relations: ['tickets'],
     });
   }
 }
