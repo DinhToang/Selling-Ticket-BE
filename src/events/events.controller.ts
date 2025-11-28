@@ -19,10 +19,12 @@ import { EventsService } from './events.service';
 import { CreateEventDTO } from './dto/create-event-dto';
 import { Event } from './event.entity';
 import { UpdateEventDTO } from './dto/update-event-dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Role.Admin)
 @Controller('admin/events')
+@ApiBearerAuth('JWT-auth')
 export class AdminEventsController {
   constructor(private eventService: EventsService) {}
 

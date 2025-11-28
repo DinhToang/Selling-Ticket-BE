@@ -14,10 +14,12 @@ import { Order } from './order.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt/jwt-guard';
 import { Roles } from 'src/auth/decorator/role.decorator';
 import { Role } from 'src/auth/enums/role.enum';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
 @Roles(Role.Admin)
 @Controller('admin/orders')
+@ApiBearerAuth('JWT-auth')
 export class AdminOrdersController {
   constructor(private ordersService: OrdersService) {}
 
@@ -30,6 +32,7 @@ export class AdminOrdersController {
 @UseGuards(JwtAuthGuard)
 @Roles(Role.User)
 @Controller('orders')
+@ApiBearerAuth('JWT-auth')
 export class UserOrdersController {
   constructor(private ordersService: OrdersService) {}
 
@@ -62,14 +65,14 @@ export class UserOrdersController {
     return this.ordersService.findUserOneOrder(userId, id);
   }
 
-  @Post(':orderId/cancle')
-  cancleOrder(
+  @Post(':orderId/cancel')
+  cancelOrder(
     @Param('orderId', new ParseIntPipe())
     orderId: number,
     @Req() req: any,
   ): Promise<Order | null> {
     const userId = req.user.userId;
     console.log(userId);
-    return this.ordersService.cancleOrder(orderId, userId);
+    return this.ordersService.cancelOrder(orderId, userId);
   }
 }

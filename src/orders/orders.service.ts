@@ -90,7 +90,7 @@ export class OrdersService {
     return order;
   }
 
-  async cancleOrder(orderId: number, userId: number): Promise<Order | null> {
+  async cancelOrder(orderId: number, userId: number): Promise<Order | null> {
     const order = await this.orderRepo.findOneOrFail({
       where: { id: orderId, userId },
       relations: [

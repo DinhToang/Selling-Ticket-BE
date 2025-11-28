@@ -18,8 +18,10 @@ import { Roles } from './decorator/role.decorator';
 import { Role } from './enums/role.enum';
 import { UpdateResult } from 'typeorm';
 import { UpdateUserProfileDTO } from 'src/users/dto/update-user-dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiBearerAuth('JWT-auth')
 export class AuthController {
   constructor(
     private userService: UsersService,

@@ -19,10 +19,13 @@ import { Roles } from 'src/auth/decorator/role.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt/jwt-guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Role.Admin)
 @Controller('admin/tickets')
+@ApiBearerAuth('JWT-auth')
+
 export class AdminTicketsController {
   constructor(private ticketsService: TicketsService) {}
 
