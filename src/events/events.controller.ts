@@ -19,7 +19,7 @@ import { EventsService } from './events.service';
 import { CreateEventDTO } from './dto/create-event-dto';
 import { Event } from './event.entity';
 import { UpdateEventDTO } from './dto/update-event-dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Role.Admin)
@@ -29,16 +29,28 @@ export class AdminEventsController {
   constructor(private eventService: EventsService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new event (For Admin only)' })
+  @ApiResponse({
+    status: 201,
+    description: 'It will create a new event.',  })
   create(@Body() createEventDTO: CreateEventDTO): Promise<Event> {
     return this.eventService.create(createEventDTO);
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all events (For Admin only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'It will return all events.',  })
   findAll(): Promise<Event[]> {
     return this.eventService.findAll();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a specific event by ID (For Admin only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'It will return the event with the specified ID.',  })
   findOne(
     @Param('id', new ParseIntPipe())
     id: number,
@@ -47,6 +59,10 @@ export class AdminEventsController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update an event by ID (For Admin only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'It will update the event with the specified ID.',  })
   update(
     @Param('id', new ParseIntPipe()) id: number,
     @Body() updateEventDTO: UpdateEventDTO,
@@ -55,6 +71,10 @@ export class AdminEventsController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete an event by ID (For Admin only)' })
+  @ApiResponse({
+    status: 200,
+    description: 'It will delete the event with the specified ID.',  })
   delete(@Param('id', new ParseIntPipe()) id: number): Promise<DeleteResult> {
     return this.eventService.remove(id);
   }
@@ -64,11 +84,19 @@ export class AdminEventsController {
 export class UserEventsController {
   constructor(private eventService: EventsService) {}
   @Get()
+  @ApiOperation({ summary: 'Get all available events' })
+  @ApiResponse({
+    status: 200,
+    description: 'It will return all events.',  })
   findAll(): Promise<Event[]> {
     return this.eventService.findAllEventForUser();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a specific event by ID that is available to the user' })
+  @ApiResponse({
+    status: 200,
+    description: 'It will return the event with the specified ID.',  })
   findOne(
     @Param('id', new ParseIntPipe())
     id: number,

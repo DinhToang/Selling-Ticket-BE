@@ -1,4 +1,5 @@
 // create-order.dto.ts
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -10,6 +11,12 @@ import {
 } from 'class-validator';
 
 export class CreateOrderDTO {
+  @ApiProperty({
+    example: [
+      { ticketId: 1, ticketQuantity: 2 },
+    ],
+    description: 'List of tickets and their quantities for the order',
+  })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => OrderItemDTO)

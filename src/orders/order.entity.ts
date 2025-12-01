@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { User } from '../users/user.entity';
 import { OrderTicket } from './order-ticket.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('orders')
 export class Order {
@@ -17,9 +18,11 @@ export class Order {
   @Column({ default: 'pending' })
   status: 'pending' | 'completed' | 'cancelled';
 
+  @ApiProperty({ example: 150, description: 'Total amount of the order in USD' })
   @Column()
   total: number
 
+  @ApiProperty({ example: '2024-12-31T23:59:59Z', description: 'Creation date of the order' })
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 

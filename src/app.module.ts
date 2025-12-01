@@ -21,8 +21,8 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env.development', '.env.production'],
       isGlobal: true,
+      envFilePath: [`${process.cwd()}/.env.${process.env.NODE_ENV}`],
       load: [configuration],
     }),
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
