@@ -25,7 +25,7 @@ export class EventsService {
   }
 
   findAll(): Promise<Event[]> {
-    return this.eventRepo.find();
+    return this.eventRepo.find({ relations: ['tickets'] });
   }
 
   findOne(id: number): Promise<Event | null> {
